@@ -9,10 +9,10 @@ A C# application that prints the git commit SHA it was built with. The Docker im
 
 ## Build & Run
 
-### Docker (Recommended)
+### Local Docker (Recommended)
 
 ```bash
-./build.sh
+./build-local-docker.sh
 docker run gitcommitapp:<short-sha>
 ```
 
@@ -57,5 +57,5 @@ Images are tagged with:
 | `Program.cs` | Application entry point |
 | `GitCommitApp.csproj` | .NET project file |
 | `Dockerfile` | Multi-stage Docker build |
-| `build.sh` | Local build script |
+| `build-local-docker.sh` | Local Docker build script |
 | `.gitlab-ci.yml` | GitLab CI/CD pipeline |
