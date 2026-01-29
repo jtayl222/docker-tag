@@ -49,8 +49,8 @@ Images are tagged with:
 
 | Branch | Description |
 |--------|-------------|
-| `main` | Runtime approach - SHA passed via environment variable |
-| `compile-time-sha` | SHA embedded at compile time via MSBuild (this branch) |
+| `main` | Compile-time approach - SHA embedded via MSBuild (recommended) |
+| `runtime-env-var` | Runtime approach - SHA passed via environment variable |
 
 ## Project Structure
 
