@@ -7,4 +7,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Target Name="SetGitCommitSha" BeforeTargets="BeforeCompile">
+    <Exec Command="git rev-parse HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true"
+          Condition="'$(GitCommitSha)' == ''">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitSha" />
+    </Exec>
+    <PropertyGroup Condition="'$(GitCommitSha)' == ''">
+      <GitCommitSha>unknown</GitCommitSha>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)GitVersion.g.cs"
+                      Lines="static partial class GitVersion { public const string CommitSha = &quot;$(GitCommitSha)&quot;%3B }"
+                      Overwrite="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)GitVersion.g.cs" />
+    </ItemGroup>
+  </Target>
+
 </Project>
