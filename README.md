@@ -45,12 +45,19 @@ Images are tagged with:
 - `$CI_REGISTRY_IMAGE:<short-sha>`
 - `$CI_REGISTRY_IMAGE:latest`
 
+## Branches
+
+| Branch | Description |
+|--------|-------------|
+| `main` | Runtime approach - SHA passed via environment variable |
+| `compile-time-sha` | SHA embedded at compile time via MSBuild (this branch) |
+
 ## Project Structure
 
 | File | Description |
 |------|-------------|
 | `Program.cs` | Application entry point |
-| `GitCommitApp.csproj` | .NET project file |
+| `GitCommitApp.csproj` | .NET project file with MSBuild target for SHA |
 | `Dockerfile` | Multi-stage Docker build |
 | `build.sh` | Local build script |
 | `.gitlab-ci.yml` | GitLab CI/CD pipeline |
