@@ -1,34 +1,55 @@
 # Git Commit SHA App
 
-A C# application that prints the git commit SHA it was built with. The Docker image is tagged with the same commit SHA for traceability.
+Applications that print the git commit SHA they were built with. Docker images are tagged with the same commit SHA for traceability.
 
-## Prerequisites
+## Implementations
 
+| Folder | Language | Build System |
+|--------|----------|--------------|
+| `csharp/` | C# (.NET 8) | MSBuild |
+| `cpp/` | C++ | CMake + Conan |
+
+## C# Version
+
+### Prerequisites
 - .NET 8 SDK
-- Docker (optional, for container builds)
+- Docker (optional)
 
-## Standalone Build & Run
-
+### Standalone
 ```bash
+cd csharp
 dotnet build
 dotnet run
 ```
 
-The git commit SHA is automatically embedded at compile time.
-
-## Local Docker Build
-
+### Docker
 ```bash
+cd csharp
 ./build-local-docker.sh
+docker run gitcommitapp:<short-sha>
 ```
 
-This will:
-1. Get the current git commit SHA
-2. Build a local Docker image with the SHA embedded
-3. Tag the image as `gitcommitapp:<short-sha>` and `gitcommitapp:latest`
+## C++ Version
 
+### Prerequisites
+- CMake 3.15+
+- Conan 2.x
+- Docker (optional)
+
+### Standalone
 ```bash
-docker run gitcommitapp:<short-sha>
+cd cpp
+conan install . --output-folder=build --build=missing
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+./build/gitcommitapp
+```
+
+### Docker
+```bash
+cd cpp
+./build-local-docker.sh
+docker run gitcommitapp-cpp:<short-sha>
 ```
 
 ## Output
@@ -39,25 +60,11 @@ Git Commit SHA: <full-sha>
 
 ## GitLab CI/CD
 
-The included `.gitlab-ci.yml` automatically builds and pushes the Docker image to GitLab Container Registry on commits to the default branch.
-
-Images are tagged with:
-- `$CI_REGISTRY_IMAGE:<short-sha>`
-- `$CI_REGISTRY_IMAGE:latest`
+Each folder has its own `.gitlab-ci.yml` that builds and pushes to GitLab Container Registry.
 
 ## Branches
 
 | Branch | Description |
 |--------|-------------|
-| `main` | Compile-time approach - SHA embedded via MSBuild (recommended) |
-| `runtime-env-var` | Runtime approach - SHA passed via environment variable |
-
-## Project Structure
-
-| File | Description |
-|------|-------------|
-| `Program.cs` | Application entry point |
-| `GitCommitApp.csproj` | .NET project file with MSBuild target for SHA |
-| `Dockerfile` | Multi-stage Docker build |
-| `build-local-docker.sh` | Local Docker build script |
-| `.gitlab-ci.yml` | GitLab CI/CD pipeline |
+| `main` | Compile-time SHA embedding (recommended) |
+| `runtime-env-var` | Runtime SHA via environment variable (C# only) |

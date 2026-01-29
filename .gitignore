@@ -1,2 +1,7 @@
+# C#
 bin/
 obj/
+
+# C++
+build/
+CMakeUserPresets.json
