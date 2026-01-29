@@ -16,15 +16,15 @@ dotnet run
 
 The git commit SHA is automatically embedded at compile time.
 
-## Docker Build
+## Local Docker Build
 
 ```bash
-./build.sh
+./build-local-docker.sh
 ```
 
 This will:
 1. Get the current git commit SHA
-2. Build the Docker image with the SHA embedded
+2. Build a local Docker image with the SHA embedded
 3. Tag the image as `gitcommitapp:<short-sha>` and `gitcommitapp:latest`
 
 ```bash
@@ -59,5 +59,5 @@ Images are tagged with:
 | `Program.cs` | Application entry point |
 | `GitCommitApp.csproj` | .NET project file with MSBuild target for SHA |
 | `Dockerfile` | Multi-stage Docker build |
-| `build.sh` | Local build script |
+| `build-local-docker.sh` | Local Docker build script |
 | `.gitlab-ci.yml` | GitLab CI/CD pipeline |
